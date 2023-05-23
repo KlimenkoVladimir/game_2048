@@ -15,6 +15,22 @@ body{
     position: relative;
 }
 
+#fieldBackground{
+    background-color: rgba(150, 150, 150, 0.8);
+    border-radius: 1rem;
+    position: absolute;
+    font-size: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    animation: show 0.1s;
+}
+
 .cell{
     background-color: rgb(32, 32, 32);
     border-radius: 1rem;
@@ -31,12 +47,34 @@ body{
     height: 20vmin;
     width: 20vmin;
     border-radius: 1rem;
-    background-color: bisque;
+    background-color: hsl(25, 60%, var(--bg-lightness));
+    color: hsl(20, 25%, var(--text-lightness));
     font-size: 26px;
     font-family: Arial, Helvetica, sans-serif;
     transition: 0.1s;
     animation: show 0.1s;
 }
+
+.time{
+    margin: 30px;
+    font-size: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    position: absolute;
+    top:0%;
+    left: 85%;
+}
+
+#record{
+    margin: 30px;
+    font-size: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    position: absolute;
+    top:0%;
+    left: 0%;
+    width: 500px; 
+}
+
+
 
 @keyframes show {
     0% {

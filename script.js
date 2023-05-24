@@ -10,7 +10,9 @@ setupInputOnce();
 
 let interval;
 let recordTime = JSON.parse(localStorage.getItem('recordTime')) || [];
-let newRecord = ''
+const lose = 'Lose';
+
+
 
 window.addEventListener("keydown", handleStartTime, {once: true});
 
@@ -63,8 +65,9 @@ async function handleInput(event) {
     grid.getRandomEmptyCell().linkTile(newTile);
 
     if(!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
-        await newTile.waitForAnimationEnd()
-        alert('lose')
+        await newTile.waitForAnimationEnd();
+        stopTime();
+        fieldBackground(lose);
     }
 
     isWin(grid.cells); 
@@ -190,9 +193,13 @@ function startTime() {
     }
     if(sec > 59) {
         min++;
-        minBtn.innerHTML = '0' + min
         secBtn.innerHTML = '00';
         sec = 0;
+    }
+    if(min > 9) {
+        minBtn.innerHTML = min;
+    } else {
+        minBtn.innerHTML = '0' + min;
     }
     mil++;
 }
@@ -203,42 +210,43 @@ function stopTime() {
 
 function handleStartTime(event) {
     if(event.key === 'ArrowUp' || 'ArrowDown' || 'ArrowLeft' || 'ArrowRight') {
-        interval = setInterval(startTime, 10)
+        interval = setInterval(startTime, 1)
     }
 }
 
 function isWin(cells) {
     cells.forEach((cell) => {
-        if (cell.linkedTile !== undefined && cell.linkedTile !== null && cell.linkedTile.value === 8) {
-            win = 'defined';
+        if (cell.linkedTile !== undefined && cell.linkedTile !== null && cell.linkedTile.value === 2048) {
+            win = 'Win';
             stopTime();
-            //localStorage.setItem('recordTime', JSON.stringify(recordTime));
             let newTime = [min, sec, mil - 1];
             let recordTimeNum
             localStorage.setItem('newTime', JSON.stringify(newTime));
             if(localStorage.getItem('recordTime') === null) {
-                recordTimeNum = 10000000000;
+                recordTimeNum = Infinity;
             } else {
                 recordTimeNum = JSON.parse(localStorage.getItem('recordTime'))[0] * 60000 + JSON.parse(localStorage.getItem('recordTime'))[1] * 1000 + JSON.parse(localStorage.getItem('recordTime'))[2];
             }
             let newTimeNum = newTime[0] * 60000 + newTime[1] *  1000 + newTime[2];
             if(recordTimeNum > newTimeNum || recordTime === []) {
                 recordTime = JSON.parse(localStorage.getItem('newTime'));
-                console.log('new record');
-                newRecord = 'New record!'
             }
             localStorage.setItem('recordTime', JSON.stringify(recordTime));
             let record = `${JSON.parse(localStorage.getItem('recordTime'))[0]}:${JSON.parse(localStorage.getItem('recordTime'))[1]}:${JSON.parse(localStorage.getItem('recordTime'))[2]}`;
-            document.getElementById("record").innerHTML = `Record<br>${record}<br>${newRecord}`;
-            fieldBackground();
+            if(recordTimeNum > newTimeNum || recordTime === []) {
+                document.getElementById("record").innerHTML = `New record!<br>${record}`;
+            } else {
+                document.getElementById("record").innerHTML = `Record<br>${record}`;
+            }    
+            fieldBackground(win);
         }
     });
 }
 
-function fieldBackground() {
+function fieldBackground(gameResult) {
     let winElement = document.createElement("div");
     winElement.setAttribute("id", "fieldBackground")
     field.appendChild(winElement);
-    winElement.innerHTML = 'Win'
+    winElement.innerHTML = gameResult
 
 }

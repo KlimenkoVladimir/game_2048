@@ -13,6 +13,7 @@ body{
     gap: 2vmin;
     border-radius: 1rem;
     position: relative;
+    margin: 10px;
 }
 
 #fieldBackground{
@@ -56,22 +57,44 @@ body{
 }
 
 .time{
+    display: flex;
     margin: 30px;
     font-size: 30px;
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
     top:0%;
-    left: 85%;
+    right: 0%;
 }
 
 #record{
+    display: flex;
     margin: 30px;
     font-size: 30px;
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
     top:0%;
     left: 0%;
-    width: 500px; 
+}
+
+@media (max-width: 800px) { 
+   .time{
+    font-size: 14px;
+    margin: 10px;
+   }
+   #record{
+    font-size: 20px;
+    margin: 10px;
+   }
+   #field{
+    grid-template-columns: repeat(4, 18vmin);
+    grid-template-rows: repeat(4, 18vmin);
+   }
+   .tile{
+    top: calc(var(--y) * (18vmin + 2vmin));
+    left: calc(var(--x) * (18vmin + 2vmin));
+    height: 18vmin;
+    width: 18vmin;
+   }
 }
 
 
